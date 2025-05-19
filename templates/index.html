@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Prediksi Stress Mahasiswa</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+
+  <div class="max-w-4xl mx-auto space-y-8">
+    <h1 class="text-3xl font-bold text-center">Prediksi Tingkat Stress</h1>
+
+    <!-- 1) Manual Form -->
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4">Isi Manual</h2>
+      <form method="post" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {% for f in features %}
+        <div>
+          <label class="block text-sm font-medium text-gray-700">{{ f.replace('_',' ') }}</label>
+          <input type="number" step="0.1" name="{{ f }}"
+                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+        </div>
+        {% endfor %}
+        <div class="col-span-full">
+          <label class="block text-sm font-medium text-gray-700">Pilih Model</label>
+          <select name="model_choice"
+                  class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+            <option value="svm">SVM</option>
+            <option value="nn">Neural Network</option>
+          </select>
+        </div>
+        <div class="col-span-full">
+          <button name="submit_manual" 
+                  class="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+            Prediksi Manual
+          </button>
+        </div>
+      </form>
+      {% if manual_pred %}
+      <p class="mt-4 text-lg">Hasil Prediksi: <span class="font-bold">{{ manual_pred }}</span></p>
+      {% endif %}
+    </div>
+
+    <!-- 2) Upload CSV -->
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4">Upload CSV</h2>
+      <form method="post" enctype="multipart/form-data" class="space-y-4">
+        <input type="file" name="file"
+               accept=".csv"
+               class="block w-full text-gray-700 border border-gray-300 rounded-md p-2"/>
+        <select name="model_choice_upload"
+                class="mt-2 block w-full border-gray-300 rounded-md shadow-sm">
+          <option value="svm">SVM</option>
+          <option value="nn">Neural Network</option>
+        </select>
+        <button name="submit_upload"
+                class="w-full py-2 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700">
+          Unggah & Prediksi
+        </button>
+      </form>
+      {% if upload_results %}
+        {% if upload_results is string %}
+          <p class="mt-4 text-red-600">{{ upload_results }}</p>
+        {% else %}
+          <div class="mt-4 overflow-x-auto">
+            <table class="min-w-full bg-white">
+              <thead>
+                <tr>
+                  {% for h in upload_results[0].keys() %}
+                  <th class="px-4 py-2 border-b">{{ h }}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in upload_results %}
+                <tr class="hover:bg-gray-100">
+                  {% for v in row.values() %}
+                  <td class="px-4 py-2 border-b">{{ v }}</td>
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+
+</body>
+</html>
