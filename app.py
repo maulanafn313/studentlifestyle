@@ -5,9 +5,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from flask import Flask, render_template, request, send_file
 import io
+import base64
+from datetime import datetime
 
 app = Flask(__name__)
-app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024   # batasi upload 2 MB
+app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024   # batasi upload 2 MB
 
 # — Load model & preprocessing sekali saat startup —
 with open('model/student_lifestyle_svm.pkl', 'rb') as f:
@@ -27,7 +29,11 @@ with open('model/label_encoder.pkl', 'rb') as f:
 FEATURES_SVM = list(scalersvm.feature_names_in_)
 FEATURES_NN = list(scalernn.feature_names_in_)
 
-@app.route("/", methods=["GET", "POST"])
+@app.route('/')
+def dashboard():
+    return render_template('dashboard.html')
+
+@app.route("/index", methods=["GET", "POST"])
 def index():
     manual_pred = None
     upload_results = None
@@ -123,7 +129,7 @@ def index():
     return render_template("index.html",
                            features=FEATURES_SVM,  # Default fitur untuk form manual
                            manual_pred=manual_pred,
-                            manual_input=manual_input,
+                           manual_input=manual_input,
                            upload_results=upload_results)
 
 @app.route("/download_template")
