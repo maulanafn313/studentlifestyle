@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Statistik</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+  <div class="max-w-4xl mx-auto space-y-8">
+    <h1 class="text-3xl font-bold text-center">Dashboard Statistik Prediksi</h1>
+
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4">Statistik Prediksi</h2>
+      <p>Total Prediksi: <span class="font-bold">{{ total_predictions }}</span></p>
+      <p>Prediksi Berhasil: <span class="font-bold">{{ successful_predictions }}</span></p>
+      <p>Persentase Keberhasilan: <span class="font-bold">{{ success_rate|round(2) }}%</span></p>
+    </div>
+
+    <div class="mt-4">
+      <a href="/" class="py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+        Kembali ke Halaman Utama
+      </a>
+    </div>
+  </div>
+</body>
+</html>

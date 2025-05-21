@@ -4,6 +4,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from flask import Flask, render_template, request, send_file
+import json
+import os
 import io
 
 app = Flask(__name__)
@@ -26,6 +28,33 @@ with open('model/label_encoder.pkl', 'rb') as f:
 # Urutan kolom seperti scaler.feature_names_in_
 FEATURES_SVM = list(scalersvm.feature_names_in_)
 FEATURES_NN = list(scalernn.feature_names_in_)
+# Rentang batasan untuk setiap fitur
+FEATURE_RANGES = {
+    "Study_Hours_Per_Day": (0, 12),
+    "Extracurricular_Hours_Per_Day": (0, 10),
+    "Sleep_Hours_Per_Day": (0, 12),
+    "Social_Hours_Per_Day": (0, 10),
+    "Physical_Activity_Hours_Per_Day": (0, 10),
+    "GPA": (0, 4)
+}
+
+STATS_FILE = prediction_stats = "prediction_stats.json"
+
+# Fungsi untuk memuat statistik dari file
+def load_stats():
+    if os.path.exists(STATS_FILE):
+        with open(STATS_FILE, "r") as f:
+            return json.load(f)
+    return {"total_predictions": 0, "successful_predictions": 0}
+
+# Fungsi untuk menyimpan statistik ke file
+def save_stats():
+    with open(STATS_FILE, "w") as f:
+        json.dump(prediction_stats, f)
+
+
+# Statistik prediksi
+prediction_stats = load_stats()
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -50,7 +79,25 @@ def index():
                 model = nn
 
             # Kumpulkan nilai input
-            vals = [float(request.form[f]) for f in features]
+            vals = []
+            error_message = None
+            for f in features:
+                value = float(request.form[f])
+                min_val, max_val = FEATURE_RANGES[f]
+                if not (min_val <= value <= max_val):
+                    error_message = f"Nilai untuk {f.replace('_', ' ')} harus berada dalam rentang {min_val} hingga {max_val}."
+                    break
+                vals.append(value)
+
+            if error_message:
+                return render_template("index.html",
+                                    features=FEATURES_SVM,
+                                    manual_pred=None,
+                                    manual_input=None,
+                                    upload_results=None,
+                                    error_message=error_message)
+
+            # Jika validasi berhasil, lanjutkan ke prediksi
             manual_input = dict(zip(features, vals))
             X = scaler.transform([vals])
             p = model.predict(X)
@@ -59,11 +106,17 @@ def index():
             # Tambahkan hasil prediksi ke data input
             manual_input['Predicted_Stress_Level'] = manual_pred
 
+            # Perbarui statistik prediksi
+            prediction_stats["total_predictions"] += 1
+            if manual_pred:  # Anggap prediksi berhasil jika ada hasil
+                prediction_stats["successful_predictions"] += 1
+            save_stats()
+
             # Simpan hasil prediksi ke gambar
             plt.figure(figsize=(8, 4))
             plt.title("Hasil Prediksi Tingkat Stres")
 
-            #  Hanya gunakan fitur numerik untuk grafik
+            # Hanya gunakan fitur numerik untuk grafik
             numeric_features = {key: value for key, value in manual_input.items() if isinstance(value, (int, float))}
             bars = plt.bar(numeric_features.keys(), numeric_features.values(), color='skyblue')
 
@@ -75,7 +128,7 @@ def index():
             # Tambahkan hasil prediksi sebagai teks di grafik
             plt.text(len(numeric_features) - 1, max(numeric_features.values()) + 0.5,
                     f"Predicted Stress Level: {manual_pred}", fontsize=12, color='red', ha='center')
-            
+
             plt.xticks(rotation=45, ha='right')
             plt.xlabel("Fitur")
             plt.ylabel("Nilai")
@@ -102,6 +155,11 @@ def index():
                     scaler = scalernn
                     le = lenn
                     model = nn
+
+                # Perbarui statistik prediksi
+                prediction_stats["total_predictions"] += len(df)
+                prediction_stats["successful_predictions"] += len(df)  # Anggap semua prediksi berhasil
+                save_stats()
 
                 # Validasi kolom
                 if not all(col in df.columns for col in features):
@@ -141,6 +199,19 @@ def download_template():
         as_attachment=True,
         download_name="template_student_lifestyle.csv"
     )
+
+def calculate_success_rate():
+    if prediction_stats["total_predictions"] == 0:
+        return 0
+    return (prediction_stats["successful_predictions"] / prediction_stats["total_predictions"]) * 100
+
+@app.route("/dashboard")
+def dashboard():
+    return render_template("dashboard.html",
+                           total_predictions=prediction_stats["total_predictions"],
+                           successful_predictions=prediction_stats["successful_predictions"],
+                           success_rate=calculate_success_rate())
+
 
 if __name__ == "__main__":
     app.run(debug=True)
