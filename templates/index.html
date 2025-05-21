@@ -37,7 +37,22 @@
         </div>
       </form>
       {% if manual_pred %}
-      <p class="mt-4 text-lg">Hasil Prediksi: <span class="font-bold">{{ manual_pred }}</span></p>
+        <div class="mt-4">
+          <h3 class="text-lg font-semibold">Hasil Prediksi Manual</h3>
+          <p class="mt-2">Hasil Prediksi: <span class="font-bold">{{ manual_pred }}</span></p>
+          <h4 class="mt-4 text-md font-semibold">Data Input:</h4>
+          <ul class="list-disc ml-6">
+            {% for key, value in manual_input.items() %}
+            <li>{{ key.replace('_', ' ') }}: {{ value }}</li>
+            {% endfor %}
+          </ul>
+          <div class="mt-4">
+            <a href="/static/manual_prediction.jpg" download
+              class="py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+              Unduh Hasil Prediksi (JPG)
+            </a>
+          </div>
+        </div>
       {% endif %}
     </div>
 
@@ -58,7 +73,17 @@
           Unggah & Prediksi
         </button>
       </form>
-      {% if upload_results %}
+
+      <!-- Tombol untuk mengunduh template CSV -->
+      <div class="mt-4">
+        <p class="mb-2">Untuk mengunduh template CSV, klik tombol di bawah ini:</p>
+        <a href="{{ url_for('download_template') }}"
+          class="py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+          Unduh Template CSV
+        </a>
+      </div>
+      
+      <!-- {% if upload_results %}
         {% if upload_results is string %}
           <p class="mt-4 text-red-600">{{ upload_results }}</p>
         {% else %}
@@ -83,6 +108,38 @@
             </table>
           </div>
         {% endif %}
+      {% endif %} -->
+
+      {% if upload_results %}
+        <div class="mt-4">
+          <h3 class="text-lg font-semibold">Hasil Prediksi CSV</h3>
+          <div class="mt-4 overflow-x-auto">
+            <table class="min-w-full bg-white">
+              <thead>
+                <tr>
+                  {% for h in upload_results[0].keys() %}
+                  <th class="px-4 py-2 border-b">{{ h }}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in upload_results %}
+                <tr class="hover:bg-gray-100">
+                  {% for v in row.values() %}
+                  <td class="px-4 py-2 border-b">{{ v }}</td>
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-4">
+            <a href="/static/results_predictions.xlsx" download
+              class="py-2 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700">
+              Unduh Hasil Prediksi (Excel)
+            </a>
+          </div>
+        </div>
       {% endif %}
     </div>
   </div>
