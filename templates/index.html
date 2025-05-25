@@ -10,6 +10,12 @@
   <div class="max-w-4xl mx-auto space-y-8">
     <h1 class="text-3xl font-bold text-center">Prediksi Tingkat Stress</h1>
 
+    <div class="mt-4">
+      <button onclick="window.history.back()" class="py-2 px-4 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
+        Kembali
+      </button>
+    </div>
+
     <!-- 1) Manual Form -->
     <div class="bg-white p-6 rounded-lg shadow">
       <h2 class="text-xl font-semibold mb-4">Isi Manual</h2>
@@ -32,13 +38,13 @@
         <div class="col-span-full">
           <button name="submit_manual" 
                   class="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-            Prediksi Manual
+            Prediksi
           </button>
         </div>
       </form>
       {% if manual_pred %}
         <div class="mt-4">
-          <h3 class="text-lg font-semibold">Hasil Prediksi Manual</h3>
+          <h3 class="text-lg font-semibold">Hasil Prediksi</h3>
           <p class="mt-2">Hasil Prediksi: <span class="font-bold">{{ manual_pred }}</span></p>
           <h4 class="mt-4 text-md font-semibold">Data Input:</h4>
           <ul class="list-disc ml-6">
@@ -52,6 +58,12 @@
               Unduh Hasil Prediksi (JPG)
             </a>
           </div>
+        </div>
+      {% endif %}
+      {% if error_message %}
+        <div class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+          <strong class="font-bold">Error:</strong>
+          <span class="block sm:inline">{{ error_message }}</span>
         </div>
       {% endif %}
     </div>
