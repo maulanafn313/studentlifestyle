@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Stress Prediction Dashboard</title>
+    <title>Dashboard Prediksi Tingkat Stres Mahasiswa</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            background-color: #f8f9fa;
+            background-color: #f0f5ff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .dashboard-container {
@@ -15,72 +16,213 @@
             margin: 2rem auto;
             padding: 2rem;
             background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
         .header {
             text-align: center;
             margin-bottom: 3rem;
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+        .header:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #0d6efd, #6610f2);
+            border-radius: 2px;
         }
         .card {
             border: none;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            height: 100%;
         }
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #0d6efd;
+        }
+        .card-body {
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        .card-text {
+            color: #666;
+        }
+        .stats-card {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 20px rgba(37, 117, 252, 0.2);
+        }
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+        .stats-label {
+            font-size: 1rem;
+            opacity: 0.8;
         }
         .btn-predict {
-            background-color: #0d6efd;
+            background: linear-gradient(90deg, #0d6efd, #6610f2);
             color: white;
-            padding: 1rem 2rem;
-            border-radius: 5px;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
             text-decoration: none;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: inline-block;
+            box-shadow: 0 10px 20px rgba(13, 110, 253, 0.2);
         }
         .btn-predict:hover {
-            background-color: #0b5ed7;
+            background: linear-gradient(90deg, #0b5ed7, #5209cf);
             color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(13, 110, 253, 0.3);
+        }
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(13, 110, 253, 0.1);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+        }
+        .feature-icon i {
+            font-size: 1.5rem;
+            color: #0d6efd;
         }
     </style>
 </head>
 <body>
     <div class="dashboard-container">
         <div class="header">
-            <h1 class="display-4 mb-3">Student Stress Prediction</h1>
-            <p class="lead text-muted">Analyze and predict student stress levels based on lifestyle factors</p>
+            <h1 class="display-4 mb-3">Prediksi Tingkat Stres Mahasiswa</h1>
+            <p class="lead text-muted">Analisis dan prediksi tingkat stres mahasiswa berdasarkan faktor gaya hidup</p>
         </div>
 
-        <div class="row g-4">
+        <!-- Statistics Row -->
+        <div class="row mb-4">
             <div class="col-md-4">
-                <div class="card h-100">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Study Hours</h5>
-                        <p class="card-text">Track and analyze study patterns</p>
-                    </div>
+                <div class="stats-card text-center">
+                    <div class="stats-label">Total Prediksi</div>
+                    <div class="stats-number">{{ total_predictions }}</div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card h-100">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Sleep Quality</h5>
-                        <p class="card-text">Monitor sleep duration and quality</p>
-                    </div>
+                <div class="stats-card text-center">
+                    <div class="stats-label">Prediksi Berhasil</div>
+                    <div class="stats-number">{{ successful_predictions }}</div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card h-100">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Physical Activity</h5>
-                        <p class="card-text">Track exercise and activity levels</p>
-                    </div>
+                <div class="stats-card text-center">
+                    <div class="stats-label">Tingkat Keberhasilan</div>
+                    <div class="stats-number">{{ success_rate|round(1) }}%</div>
                 </div>
             </div>
         </div>
 
+        <!-- Main Features Row -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h5 class="card-title">Jam Belajar</h5>
+                        <p class="card-text">Lacak dan analisis pola belajar untuk memahami dampaknya pada tingkat stres</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-moon"></i>
+                        </div>
+                        <h5 class="card-title">Kualitas Tidur</h5>
+                        <p class="card-text">Pantau durasi dan kualitas tidur untuk meningkatkan kesejahteraan secara keseluruhan</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-running"></i>
+                        </div>
+                        <h5 class="card-title">Aktivitas Fisik</h5>
+                        <p class="card-text">Pantau olahraga dan tingkat aktivitas untuk menjaga keseimbangan yang sehat</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Features Row -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h5 class="card-title">Interaksi Sosial</h5>
+                        <p class="card-text">Ukur keterlibatan sosial dan pengaruhnya terhadap kesehatan mental</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <h5 class="card-title">Performa Akademik</h5>
+                        <p class="card-text">Pantau IPK dan prestasi akademik dalam kaitannya dengan stres</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-theater-masks"></i>
+                        </div>
+                        <h5 class="card-title">Kegiatan Ekstrakurikuler</h5>
+                        <p class="card-text">Seimbangkan kegiatan akademik dan non-akademik untuk kesehatan mental yang lebih baik</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
         <div class="text-center mt-5">
-            <a href="{{ url_for('index') }}" class="btn-predict">Start Prediction Test</a>
+            <a href="{{ url_for('predict') }}" class="btn-predict">
+                <i class="fas fa-chart-line me-2"></i>Mulai Tes Prediksi
+            </a>
         </div>
     </div>
 

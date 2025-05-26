@@ -59,7 +59,11 @@ def save_stats():
 prediction_stats = load_stats()
 
 @app.route('/')
-def index():
+def home():
+    return redirect(url_for('dashboard'))
+
+@app.route('/predict')
+def predict():
     manual_pred = None
     upload_results = None
     manual_input = None
