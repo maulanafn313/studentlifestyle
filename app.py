@@ -191,8 +191,9 @@ def dashboard():
                            successful_predictions=prediction_stats["successful_predictions"],
                            success_rate=calculate_success_rate())
 
+@app.route("/thanks")
+def thanks():
+    return render_template("thanks.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-

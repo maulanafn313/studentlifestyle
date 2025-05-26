@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Thank You</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="min-h-screen bg-gradient-to-br from-indigo-100 via-white to-indigo-200 flex items-center justify-center p-4">
+    <div class="w-full max-w-2xl bg-white p-10 rounded-3xl shadow-2xl text-center border border-gray-200">
+      
+      <img
+        src="/static/thanks.png"
+        alt="Thank You Illustration"
+        class="w-40 h-auto mx-auto mb-6 rounded-xl shadow-md"
+      />
+
+      <!-- Optional Icon -->
+      <div class="mb-4">
+        <svg class="w-12 h-12 mx-auto text-green-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+
+      <h1 class="text-4xl font-extrabold text-gray-800 mb-4">Thank You!</h1>
+
+      <p class="text-gray-700 text-lg leading-relaxed mb-6">
+        We truly appreciate your kindness in sharing the dataset.<br />
+        Your contribution plays a meaningful role in the progress of our project.
+      </p>
+
+      <p class="text-gray-600 italic mb-6 text-base">
+        Warm regards, Team Nugas Yuk<br />
+        <strong class="text-indigo-700">{{ Team_NugasYuk }}</strong>
+      </p>
+
+      <div>
+        <a
+          href="https://www.kaggle.com/datasets/steve1215rogg/student-lifestyle-dataset/data?utm_source=chatgpt.com"
+          target="_blank"
+          class="text-blue-600 hover:text-blue-800 underline transition duration-200"
+        >
+          Kaggle Dataset Link ↗
+        </a>
+      </div>
+    </div>
+  </body>
+</html>
