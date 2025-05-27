@@ -1,0 +1,18 @@
+<nav class="bg-blue-600 text-white py-4 shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+        <a href="{{ url_for('home') }}" class="text-2xl font-bold hover:text-gray-200">
+            Student Lifestyle
+        </a>
+        <ul class="flex space-x-6">
+            <li>
+                <a href="{{ url_for('dashboard') }}" class="hover:text-gray-200">Dashboard</a>
+            </li>
+            <li>
+                <a href="{{ url_for('predict') }}" class="hover:text-gray-200">Prediksi</a>
+            </li>
+            <li>
+                <a href="{{ url_for('thanks') }}" class="hover:text-gray-200">Thanks</a>
+            </li>
+        </ul>
+    </div>
+</nav>

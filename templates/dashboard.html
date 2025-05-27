@@ -1,30 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Prediksi Tingkat Stres Mahasiswa</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
             background-color: #f0f5ff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
         .dashboard-container {
             max-width: 1200px;
             margin: 2rem auto;
             padding: 2rem;
             background-color: white;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
+
         .header {
             text-align: center;
             margin-bottom: 3rem;
             position: relative;
             padding-bottom: 1.5rem;
         }
+
         .header:after {
             content: '';
             position: absolute;
@@ -36,35 +41,42 @@
             background: linear-gradient(90deg, #0d6efd, #6610f2);
             border-radius: 2px;
         }
+
         .card {
             border: none;
             border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
             overflow: hidden;
             height: 100%;
         }
+
         .card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
+
         .card-icon {
             font-size: 2.5rem;
             margin-bottom: 1rem;
             color: #0d6efd;
         }
+
         .card-body {
             padding: 2rem 1.5rem;
             text-align: center;
         }
+
         .card-title {
             font-weight: 600;
             margin-bottom: 1rem;
             color: #333;
         }
+
         .card-text {
             color: #666;
         }
+
         .stats-card {
             background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             color: white;
@@ -73,15 +85,18 @@
             margin-bottom: 2rem;
             box-shadow: 0 10px 20px rgba(37, 117, 252, 0.2);
         }
+
         .stats-number {
             font-size: 2.5rem;
             font-weight: 700;
             margin: 0.5rem 0;
         }
+
         .stats-label {
             font-size: 1rem;
             opacity: 0.8;
         }
+
         .btn-predict {
             background: linear-gradient(90deg, #0d6efd, #6610f2);
             color: white;
@@ -93,12 +108,14 @@
             display: inline-block;
             box-shadow: 0 10px 20px rgba(13, 110, 253, 0.2);
         }
+
         .btn-predict:hover {
             background: linear-gradient(90deg, #0b5ed7, #5209cf);
             color: white;
             transform: translateY(-3px);
             box-shadow: 0 15px 30px rgba(13, 110, 253, 0.3);
         }
+
         .feature-icon {
             width: 60px;
             height: 60px;
@@ -109,41 +126,53 @@
             border-radius: 50%;
             margin: 0 auto 1rem;
         }
+
         .feature-icon i {
             font-size: 1.5rem;
             color: #0d6efd;
         }
     </style>
 </head>
+
 <body>
+    {% include 'header.html' %}
     <div class="dashboard-container">
         <div class="header">
             <h1 class="display-4 mb-3">Prediksi Tingkat Stres Mahasiswa</h1>
             <p class="lead text-muted">Analisis dan prediksi tingkat stres mahasiswa berdasarkan faktor gaya hidup</p>
         </div>
 
-        <!-- Statistics Row -->
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <div class="stats-card text-center">
-                    <div class="stats-label">Total Prediksi</div>
-                    <div class="stats-number">{{ total_predictions }}</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="stats-card text-center">
-                    <div class="stats-label">Prediksi Berhasil</div>
-                    <div class="stats-number">{{ successful_predictions }}</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="stats-card text-center">
-                    <div class="stats-label">Tingkat Keberhasilan</div>
-                    <div class="stats-number">{{ success_rate|round(1) }}%</div>
-                </div>
-            </div>
-        </div>
-
+        <!-- Dalam bagian statistik -->
+        <h2 class="mt-5">Statistik Prediksi per Kategori</h2>
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>Kategori Stres</th>
+                    <th>Prediksi Benar</th>
+                    <th>Prediksi Salah</th>
+                    <th>Total Prediksi</th>
+                    <th>Akurasi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category, results in target_stats.items() %}
+                <tr>
+                    <td>{{ category.capitalize() }}</td>
+                    <td>{{ results['Benar'] }}</td>
+                    <td>{{ results['Salah'] }}</td>
+                    <td>{{ results['Benar'] + results['Salah'] }}</td>
+                    <td>
+                        {% set total = results['Benar'] + results['Salah'] %}
+                        {% if total > 0 %}
+                        {{ ((results['Benar'] / total) * 100)|round(1) }}%
+                        {% else %}
+                        0%
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
         <!-- Main Features Row -->
         <div class="row g-4 mb-5">
             <div class="col-md-4">
@@ -153,7 +182,8 @@
                             <i class="fas fa-book"></i>
                         </div>
                         <h5 class="card-title">Jam Belajar</h5>
-                        <p class="card-text">Lacak dan analisis pola belajar untuk memahami dampaknya pada tingkat stres</p>
+                        <p class="card-text">Lacak dan analisis pola belajar untuk memahami dampaknya pada tingkat stres
+                        </p>
                     </div>
                 </div>
             </div>
@@ -164,7 +194,8 @@
                             <i class="fas fa-moon"></i>
                         </div>
                         <h5 class="card-title">Kualitas Tidur</h5>
-                        <p class="card-text">Pantau durasi dan kualitas tidur untuk meningkatkan kesejahteraan secara keseluruhan</p>
+                        <p class="card-text">Pantau durasi dan kualitas tidur untuk meningkatkan kesejahteraan secara
+                            keseluruhan</p>
                     </div>
                 </div>
             </div>
@@ -175,7 +206,8 @@
                             <i class="fas fa-running"></i>
                         </div>
                         <h5 class="card-title">Aktivitas Fisik</h5>
-                        <p class="card-text">Pantau olahraga dan tingkat aktivitas untuk menjaga keseimbangan yang sehat</p>
+                        <p class="card-text">Pantau olahraga dan tingkat aktivitas untuk menjaga keseimbangan yang sehat
+                        </p>
                     </div>
                 </div>
             </div>
@@ -212,7 +244,8 @@
                             <i class="fas fa-theater-masks"></i>
                         </div>
                         <h5 class="card-title">Kegiatan Ekstrakurikuler</h5>
-                        <p class="card-text">Seimbangkan kegiatan akademik dan non-akademik untuk kesehatan mental yang lebih baik</p>
+                        <p class="card-text">Seimbangkan kegiatan akademik dan non-akademik untuk kesehatan mental yang
+                            lebih baik</p>
                     </div>
                 </div>
             </div>
@@ -228,4 +261,5 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

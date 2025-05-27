@@ -1,1 +1,16 @@
-{"total_predictions": 10, "successful_predictions": 10}
+{
+    "total_predictions": 31,
+    "successful_predictions": 31,
+    "low": {
+        "Benar": 5,
+        "Salah": 0
+    },
+    "moderate": {
+        "Benar": 9,
+        "Salah": 0
+    },
+    "high": {
+        "Benar": 17,
+        "Salah": 0
+    }
+}

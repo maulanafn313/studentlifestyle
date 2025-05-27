@@ -5,21 +5,15 @@
   <title>Prediksi Stress Mahasiswa</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 p-6">
-
+<body class="bg-gray-100">
+  {% include 'header.html' %}
   <div class="max-w-4xl mx-auto space-y-8">
-    <h1 class="text-3xl font-bold text-center">Prediksi Tingkat Stress</h1>
-
-    <div class="mt-4">
-      <a href="{{ url_for('dashboard') }}" class="py-2 px-4 bg-gray-500 text-white rounded-lg hover:bg-gray-600 inline-block">
-        Dashboard
-      </a>
-    </div>
+    <h1 class="text-3xl font-bold text-center mt-5">Prediksi Tingkat Stress</h1>
 
     <!-- 1) Manual Form -->
     <div class="bg-white p-6 rounded-lg shadow">
       <h2 class="text-xl font-semibold mb-4">Isi Manual</h2>
-      <form method="post" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <form method="post" class="grid grid-cols-1 md:grid-cols-2 gap-4" enctype="multipart/form-data">
         {% for f in features %}
         <div>
           <label class="block text-sm font-medium text-gray-700">{{ f.replace('_',' ') }}</label>
