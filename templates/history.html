@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Riwayat Prediksi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+</head>
+
+<body class="bg-gray-100">
+    {% include 'header.html' %}
+    <div class="max-w-5xl mx-auto mt-8 bg-white p-6 rounded shadow">
+        <h1 class="text-2xl font-bold mb-4">Riwayat Prediksi</h1>
+        {% if history %}
+        <div class="overflow-x-auto">
+            <table id="historyTable" class="min-w-full border text-sm">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="border px-2 py-1">No</th>
+                        <th class="border px-2 py-1">Tipe</th>
+                        <th class="border px-2 py-1">Metode</th>
+                        <th class="border px-2 py-1">Fitur</th>
+                        <th class="border px-2 py-1">Hasil Prediksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in history %}
+                    <tr>
+                        <td class="border px-2 py-1 text-center">{{ loop.index }}</td>
+                        <td class="border px-2 py-1 text-center">{{ item.tipe }}</td>
+                        <td class="border px-2 py-1 text-center">{{ item.metode }}</td>
+                        <td class="border px-2 py-1">
+                            <ul>
+                                {% for k, v in item.fitur.items() %}
+                                <li><b>{{ k.replace('_',' ') }}</b>: {{ v }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td class="border px-2 py-1 text-center">{{ item.hasil_prediksi }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p>Belum ada riwayat prediksi.</p>
+        {% endif %}
+
+        <h2 class="text-lg font-semibold mb-2">Statistik Model</h2>
+        <div class="flex flex-wrap gap-8 mb-4">
+            <div>
+                <canvas id="modelChart" width="200" height="120"></canvas>
+            </div>
+            <div>
+                <h3 class="font-semibold">Insight:</h3>
+                <ul class="list-disc ml-5 text-sm">
+                    <li>Model yang paling sering digunakan: <b>{{ most_used }}</b></li>
+                    <li>Hasil prediksi terbanyak SVM: <b>{{ most_pred_svm }}</b></li>
+                    <li>Hasil prediksi terbanyak NN: <b>{{ most_pred_nn }}</b></li>
+                </ul>
+            </div>
+        </div>
+
+        <h2 class="text-lg font-semibold mb-2">Distribusi Hasil Prediksi per Model</h2>
+        <div class="flex flex-wrap gap-8 mb-4">
+            <div>
+                <canvas id="svmChart" width="200" height="120"></canvas>
+            </div>
+            <div>
+                <canvas id="nnChart" width="200" height="120"></canvas>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            // Data dari Flask
+            const modelCounts = {{ model_counts|tojson }};
+            const hasilPerModel = {{ hasil_per_model|tojson }};
+
+            // Grafik jumlah prediksi per model
+            new Chart(document.getElementById('modelChart'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(modelCounts),
+                    datasets: [{
+                        label: 'Jumlah Prediksi',
+                        data: Object.values(modelCounts),
+                        backgroundColor: ['#2563eb', '#059669']
+                    }]
+                },
+                options: { responsive: true, plugins: { legend: { display: false } } }
+            });
+
+            // Grafik distribusi hasil prediksi SVM
+            new Chart(document.getElementById('svmChart'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(hasilPerModel.SVM),
+                    datasets: [{
+                        label: 'SVM',
+                        data: Object.values(hasilPerModel.SVM),
+                        backgroundColor: '#2563eb'
+                    }]
+                },
+                options: { responsive: true, plugins: { legend: { display: false } }, title: { display: true, text: 'SVM' } }
+            });
+
+            // Grafik distribusi hasil prediksi NN
+            new Chart(document.getElementById('nnChart'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(hasilPerModel.NN),
+                    datasets: [{
+                        label: 'NN',
+                        data: Object.values(hasilPerModel.NN),
+                        backgroundColor: '#059669'
+                    }]
+                },
+                options: { responsive: true, plugins: { legend: { display: false } }, title: { display: true, text: 'NN' } }
+            });
+        </script>
+
+        <script>
+            $(document).ready(function () {
+                $('#historyTable').DataTable({
+                    "pageLength": 10,
+                    "lengthMenu": [5, 10, 25, 50, 100],
+                    "language": {
+                        "search": "Cari:",
+                        "lengthMenu": "Tampilkan _MENU_ entri",
+                        "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                        "paginate": {
+                            "first": "Pertama",
+                            "last": "Terakhir",
+                            "next": "Berikutnya",
+                            "previous": "Sebelumnya"
+                        }
+                    }
+                });
+            });
+        </script>
+    </div>
+</body>
+
+</html>

@@ -141,38 +141,6 @@
             <h1 class="display-4 mb-3">Prediksi Tingkat Stres Mahasiswa</h1>
             <p class="lead text-muted">Analisis dan prediksi tingkat stres mahasiswa berdasarkan faktor gaya hidup</p>
         </div>
-
-        <!-- Dalam bagian statistik -->
-        <h2 class="mt-5">Statistik Prediksi per Kategori</h2>
-        <table class="table table-bordered mt-3">
-            <thead>
-                <tr>
-                    <th>Kategori Stres</th>
-                    <th>Prediksi Benar</th>
-                    <th>Prediksi Salah</th>
-                    <th>Total Prediksi</th>
-                    <th>Akurasi</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for category, results in target_stats.items() %}
-                <tr>
-                    <td>{{ category.capitalize() }}</td>
-                    <td>{{ results['Benar'] }}</td>
-                    <td>{{ results['Salah'] }}</td>
-                    <td>{{ results['Benar'] + results['Salah'] }}</td>
-                    <td>
-                        {% set total = results['Benar'] + results['Salah'] %}
-                        {% if total > 0 %}
-                        {{ ((results['Benar'] / total) * 100)|round(1) }}%
-                        {% else %}
-                        0%
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
         <!-- Main Features Row -->
         <div class="row g-4 mb-5">
             <div class="col-md-4">

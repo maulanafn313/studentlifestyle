@@ -9,6 +9,8 @@ import os
 import io
 import base64
 from datetime import datetime
+from PIL import Image, ImageDraw, ImageFont
+import threading
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024   # batasi upload 2 MB
@@ -40,44 +42,19 @@ FEATURE_RANGES = {
     "GPA": (0, 4)
 }
 
-STATS_FILE = prediction_stats = "prediction_stats.json"
+HISTORY_FILE = "history.json"
+history_lock = threading.Lock()
 
-# Fungsi untuk memuat statistik dari file
-def load_stats():
-    default_stats = {
-        "total_predictions": 0,
-        "successful_predictions": 0,
-        "low": {"Benar": 0, "Salah": 0},
-        "moderate": {"Benar": 0, "Salah": 0},
-        "high": {"Benar": 0, "Salah": 0}
-    }
-    
-    if not os.path.exists(STATS_FILE):
-        with open(STATS_FILE, 'w') as f:
-            json.dump(default_stats, f)
-        return default_stats
-        
-    try:
-        with open(STATS_FILE, 'r') as f:
-            stats = json.load(f)
-            # Pastikan semua kategori ada
-            for key in default_stats.keys():
-                if key not in stats:
-                    stats[key] = default_stats[key]
-            return stats
-    except:
-        return default_stats
-
-# Fungsi untuk menyimpan statistik ke file
-def save_stats():
-    try:
-        with open(STATS_FILE, "w") as f:
-            json.dump(prediction_stats, f, indent=4)
-    except Exception as e:
-        print(f"Error saving stats: {e}")
-
-# Statistik prediksi
-prediction_stats = load_stats()
+def append_history(entry):
+    with history_lock:
+        if os.path.exists(HISTORY_FILE):
+            with open(HISTORY_FILE, "r") as f:
+                history = json.load(f)
+        else:
+            history = []
+        history.append(entry)
+        with open(HISTORY_FILE, "w") as f:
+            json.dump(history, f, indent=2)
 
 @app.route('/')
 def home():
@@ -130,26 +107,21 @@ def predict():
                 X = scaler.transform([vals])
                 p = model.predict(X)
                 manual_pred = le.inverse_transform(p)[0]
+                manual_input['Prediction_Label'] = manual_pred
 
-                # Update statistik prediksi
-                if model_choice == 'svm':
-                    # Gunakan prediksi SVM sebagai referensi
-                    X_ref = scalersvm.transform([vals])
-                    p_ref = svm.predict(X_ref)
-                    ref_pred = lesvm.inverse_transform(p_ref)[0]
-                else:
-                    # Gunakan prediksi NN sebagai referensi
-                    X_ref = scalernn.transform([vals])
-                    p_ref = nn.predict(X_ref)
-                    ref_pred = lenn.inverse_transform(p_ref)[0]
-
-                is_correct = manual_pred == ref_pred
-                update_prediction_stats(manual_pred, is_correct)
-                
                 # Tambahkan status prediksi ke output
-                manual_input['Prediction_Status'] = 'Benar' if is_correct else 'Salah'
+                manual_input['Prediction_Status'] = 'Benar'  # Asumsikan benar untuk input manual
+                manual_input['Metode'] = model_choice.upper()
+                append_history({
+                    "fitur": {k: v for k, v in manual_input.items() if k not in ["Prediction_Label", "Prediction_Status", "Metode"]},
+                    "hasil_prediksi": manual_input.get("Prediction_Label"),
+                    "metode": manual_input.get("Metode"),
+                    "tipe": "Manual"
+                })
 
-                save_stats()  # Pastikan perubahan tersimpan
+                # Simpan input manual ke file sementara untuk diunduh sebagai JPG
+                with open("manual_input_temp.json", "w") as f:
+                    json.dump(manual_input, f)
 
             except Exception as e:
                 return render_template("index.html",
@@ -187,27 +159,20 @@ def predict():
                         preds = model.predict(X)
                         df['Prediction'] = le.inverse_transform(preds)
 
-                        # Update statistik untuk setiap baris
-                        for idx, row in df.iterrows():
-                            if model_choice_upload == 'svm':
-                                X_ref = scalersvm.transform(row[features].values.reshape(1, -1))
-                                p_ref = svm.predict(X_ref)
-                                ref_pred = lesvm.inverse_transform(p_ref)[0]
-                            else:
-                                X_ref = scalernn.transform(row[features].values.reshape(1, -1))
-                                p_ref = nn.predict(X_ref)
-                                ref_pred = lenn.inverse_transform(p_ref)[0]
-                                
-                            is_correct = row['Prediction'] == ref_pred
-                            update_prediction_stats(row['Prediction'], is_correct)
-                            df.at[idx, 'Prediction_Status'] = 'Benar' if is_correct else 'Salah'
-
                         # Simpan hasil prediksi ke file Excel
                         output_file = "static/results_predictions.xlsx"
                         df.to_excel(output_file, index=False)
 
                         # Kirim DataFrame ke template
                         upload_results = df.to_dict(orient='records')
+                        for _, row in df.iterrows():
+                            fitur = {col: row[col] for col in features}
+                            append_history({
+                                "fitur": fitur,
+                                "hasil_prediksi": row["Prediction"],
+                                "metode": model_choice_upload.upper(),
+                                "tipe": "Upload"
+                            })
                 else:
                     upload_results = "File tidak valid. Unggah CSV."
 
@@ -238,81 +203,88 @@ def download_template():
         download_name="template_student_lifestyle.csv"
     )
 
-def calculate_success_rate():
-    if prediction_stats["total_predictions"] == 0:
-        return 0
-    return (prediction_stats["successful_predictions"] / prediction_stats["total_predictions"]) * 100
-
-
-
-def calculate_target_statistics():
-    default_stats = {
-        "low": {"Benar": 0, "Salah": 0},
-        "moderate": {"Benar": 0, "Salah": 0},
-        "high": {"Benar": 0, "Salah": 0}
-    }
-    
-    if not os.path.exists(STATS_FILE):
-        return default_stats
-
-    try:
-        with open(STATS_FILE, 'r') as f:
-            stats = json.load(f)
-            # Hanya ambil statistik kategori (low, moderate, high)
-            category_stats = {
-                k: v for k, v in stats.items() 
-                if k in ['low', 'moderate', 'high']
-            }
-            
-            # Pastikan setiap kategori memiliki struktur yang benar
-            for category in ['low', 'moderate', 'high']:
-                if category not in category_stats:
-                    category_stats[category] = {"Benar": 0, "Salah": 0}
-                elif not isinstance(category_stats[category], dict):
-                    category_stats[category] = {"Benar": 0, "Salah": 0}
-                    
-            return category_stats
-    except:
-        return default_stats
-
-def update_target_statistics(target, status):
-    stats = calculate_target_statistics()
-
-    if target in stats:
-        stats[target][status] += 1
-
-    with open(STATS_FILE, "w") as f:
-        json.dump(stats, f)
-
-def update_prediction_stats(prediction, is_correct):
-    global prediction_stats
-    
-    # Update kategori (low, moderate, high)
-    prediction = prediction.lower()  # konversi ke lowercase untuk konsistensi
-    if prediction in ['low', 'moderate', 'high']:
-        status = "Benar" if is_correct else "Salah"
-        prediction_stats[prediction][status] += 1
-    
-    # Update total statistik
-    prediction_stats["total_predictions"] += 1
-    if is_correct:
-        prediction_stats["successful_predictions"] += 1
-            
-    save_stats()
 
 @app.route("/dashboard")
 def dashboard():
-    target_stats = calculate_target_statistics()
-    return render_template("dashboard.html",
-                            total_predictions=prediction_stats.get("total_predictions", 0),
-                            successful_predictions=prediction_stats.get("successful_predictions", 0),
-                            success_rate=calculate_success_rate(),
-                            target_stats=target_stats)
+    return render_template("dashboard.html")
 
 
 @app.route("/thanks")
 def thanks():
     return render_template("thanks.html")
+
+@app.route("/download_manual_prediction")
+def download_manual_prediction():
+    try:
+        if os.path.exists("manual_input_temp.json"):
+            with open("manual_input_temp.json", "r") as f:
+                manual_input = json.load(f)
+        else:
+            return "Tidak ada data prediksi manual terbaru.", 404
+    except Exception as e:
+        return f"Error: {e}", 500
+
+    # Siapkan teks tanpa Prediction_Status
+    lines = []
+    for k, v in manual_input.items():
+        if k != "Prediction_Status":
+            lines.append(f"{k.replace('_',' ')}: {v}")
+    # Tambahkan hasil label prediksi (ambil dari manual_input)
+    pred_label = manual_input.get("Prediction_Label") or manual_input.get("Prediction") or None
+    if pred_label:
+        lines.append(f"Hasil Prediksi: {pred_label}")
+
+    # Prediction_Status tidak perlu ditambahkan lagi
+
+    # Buat gambar dari teks
+    font = ImageFont.load_default()
+    padding = 10
+    width = 400
+    line_height = 20
+    height = line_height * len(lines) + 2 * padding
+
+    img = Image.new("RGB", (width, height), color="white")
+    draw = ImageDraw.Draw(img)
+    for i, line in enumerate(lines):
+        draw.text((padding, padding + i * line_height), line, fill="black", font=font)
+
+    buf = io.BytesIO()
+    img.save(buf, format="JPEG")
+    buf.seek(0)
+    return send_file(buf, mimetype="image/jpeg", as_attachment=True, download_name="manual_prediction.jpg")
+
+@app.route("/history")
+def history():
+    if os.path.exists(HISTORY_FILE):
+        with open(HISTORY_FILE, "r") as f:
+            history = json.load(f)
+    else:
+        history = []
+
+    # Statistik jumlah prediksi per model
+    model_counts = {"SVM": 0, "NN": 0}
+    hasil_per_model = {"SVM": {}, "NN": {}}
+    for item in history:
+        model = item.get("metode", "UNKNOWN")
+        hasil = item.get("hasil_prediksi", "UNKNOWN")
+        if model in model_counts:
+            model_counts[model] += 1
+            hasil_per_model[model][hasil] = hasil_per_model[model].get(hasil, 0) + 1
+
+    # Insight teks
+    most_used = max(model_counts, key=model_counts.get) if history else "-"
+    most_pred_svm = max(hasil_per_model["SVM"], key=hasil_per_model["SVM"].get) if hasil_per_model["SVM"] else "-"
+    most_pred_nn = max(hasil_per_model["NN"], key=hasil_per_model["NN"].get) if hasil_per_model["NN"] else "-"
+
+    return render_template(
+        "history.html",
+        history=history,
+        model_counts=model_counts,
+        hasil_per_model=hasil_per_model,
+        most_used=most_used,
+        most_pred_svm=most_pred_svm,
+        most_pred_nn=most_pred_nn
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)
