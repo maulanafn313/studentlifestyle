@@ -13,6 +13,32 @@
 <body class="bg-gray-100">
     {% include 'header.html' %}
     <div class="max-w-5xl mx-auto mt-8 bg-white p-6 rounded shadow">
+        <h1 class="text-2xl font-bold mb-4">Statistik Prediksi</h1>
+        <h1 class="text-lg font-semibold mb-2">Statistik Model</h1>
+        <div class="flex flex-wrap gap-8 mb-4">
+            <div>
+                <canvas id="modelChart" width="200" height="120"></canvas>
+            </div>
+            <div>
+                <h3 class="font-semibold">Insight:</h3>
+                <ul class="list-disc ml-5 text-sm">
+                    <li>Model yang paling sering digunakan: <b>{{ most_used }}</b></li>
+                    <li>Hasil prediksi terbanyak SVM: <b>{{ most_pred_svm }}</b></li>
+                    <li>Hasil prediksi terbanyak NN: <b>{{ most_pred_nn }}</b></li>
+                </ul>
+            </div>
+        </div>
+
+        <h1 class="text-lg font-semibold mb-2">Distribusi Hasil Prediksi per Model</h1>
+        <div class="flex flex-wrap gap-8 mb-4">
+            <div>
+                <canvas id="svmChart" width="200" height="120"></canvas>
+            </div>
+            <div>
+                <canvas id="nnChart" width="200" height="120"></canvas>
+            </div>
+        </div>
+
         <h1 class="text-2xl font-bold mb-4">Riwayat Prediksi</h1>
         {% if history %}
         <div class="overflow-x-auto">
@@ -48,31 +74,6 @@
         {% else %}
         <p>Belum ada riwayat prediksi.</p>
         {% endif %}
-
-        <h2 class="text-lg font-semibold mb-2">Statistik Model</h2>
-        <div class="flex flex-wrap gap-8 mb-4">
-            <div>
-                <canvas id="modelChart" width="200" height="120"></canvas>
-            </div>
-            <div>
-                <h3 class="font-semibold">Insight:</h3>
-                <ul class="list-disc ml-5 text-sm">
-                    <li>Model yang paling sering digunakan: <b>{{ most_used }}</b></li>
-                    <li>Hasil prediksi terbanyak SVM: <b>{{ most_pred_svm }}</b></li>
-                    <li>Hasil prediksi terbanyak NN: <b>{{ most_pred_nn }}</b></li>
-                </ul>
-            </div>
-        </div>
-
-        <h2 class="text-lg font-semibold mb-2">Distribusi Hasil Prediksi per Model</h2>
-        <div class="flex flex-wrap gap-8 mb-4">
-            <div>
-                <canvas id="svmChart" width="200" height="120"></canvas>
-            </div>
-            <div>
-                <canvas id="nnChart" width="200" height="120"></canvas>
-            </div>
-        </div>
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
