@@ -1,1 +1,1 @@
-{"Study_Hours_Per_Day": 3.0, "Extracurricular_Hours_Per_Day": 4.0, "Sleep_Hours_Per_Day": 7.0, "Social_Hours_Per_Day": 3.0, "Physical_Activity_Hours_Per_Day": 3.0, "GPA": 3.6, "Prediction_Label": "Low", "Prediction_Status": "Benar", "Metode": "SVM"}
+{"Study_Hours_Per_Day": 4.0, "Extracurricular_Hours_Per_Day": 4.0, "Sleep_Hours_Per_Day": 3.0, "Social_Hours_Per_Day": 2.0, "Physical_Activity_Hours_Per_Day": 4.0, "GPA": 3.4, "Prediction_Label": "High", "Prediction_Status": "Benar", "Metode": "SVM"}
