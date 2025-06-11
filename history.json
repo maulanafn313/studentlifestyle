@@ -778,5 +778,421 @@
     "hasil_prediksi": "High",
     "metode": "NN",
     "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 4.0,
+      "Extracurricular_Hours_Per_Day": 3.0,
+      "Sleep_Hours_Per_Day": 3.0,
+      "Social_Hours_Per_Day": 2.0,
+      "Physical_Activity_Hours_Per_Day": 2.0,
+      "GPA": 3.5
+    },
+    "hasil_prediksi": "High",
+    "metode": "SVM",
+    "tipe": "Manual"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 4.0,
+      "Extracurricular_Hours_Per_Day": 3.0,
+      "Sleep_Hours_Per_Day": 3.0,
+      "Social_Hours_Per_Day": 2.0,
+      "Physical_Activity_Hours_Per_Day": 2.0,
+      "GPA": 3.5
+    },
+    "hasil_prediksi": "High",
+    "metode": "SVM",
+    "tipe": "Manual"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 6.2,
+      "Extracurricular_Hours_Per_Day": 4.0,
+      "Sleep_Hours_Per_Day": 6.0,
+      "Social_Hours_Per_Day": 3.5,
+      "Physical_Activity_Hours_Per_Day": 4.3,
+      "GPA": 2.88
+    },
+    "hasil_prediksi": "High",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 5.9,
+      "Extracurricular_Hours_Per_Day": 2.2,
+      "Sleep_Hours_Per_Day": 9.9,
+      "Social_Hours_Per_Day": 5.6,
+      "Physical_Activity_Hours_Per_Day": 0.4,
+      "GPA": 3.12
+    },
+    "hasil_prediksi": "Low",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 9.6,
+      "Extracurricular_Hours_Per_Day": 2.3,
+      "Sleep_Hours_Per_Day": 8.3,
+      "Social_Hours_Per_Day": 3.5,
+      "Physical_Activity_Hours_Per_Day": 0.3,
+      "GPA": 3.41
+    },
+    "hasil_prediksi": "High",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 7.2,
+      "Extracurricular_Hours_Per_Day": 0.5,
+      "Sleep_Hours_Per_Day": 7.6,
+      "Social_Hours_Per_Day": 2.1,
+      "Physical_Activity_Hours_Per_Day": 6.6,
+      "GPA": 3.11
+    },
+    "hasil_prediksi": "Moderate",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 9.0,
+      "Extracurricular_Hours_Per_Day": 3.6,
+      "Sleep_Hours_Per_Day": 9.9,
+      "Social_Hours_Per_Day": 0.3,
+      "Physical_Activity_Hours_Per_Day": 1.2,
+      "GPA": 3.19
+    },
+    "hasil_prediksi": "High",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 7.8,
+      "Extracurricular_Hours_Per_Day": 2.1,
+      "Sleep_Hours_Per_Day": 8.3,
+      "Social_Hours_Per_Day": 1.4,
+      "Physical_Activity_Hours_Per_Day": 4.4,
+      "GPA": 3.31
+    },
+    "hasil_prediksi": "Moderate",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 8.7,
+      "Extracurricular_Hours_Per_Day": 2.2,
+      "Sleep_Hours_Per_Day": 9.4,
+      "Social_Hours_Per_Day": 2.0,
+      "Physical_Activity_Hours_Per_Day": 1.7,
+      "GPA": 3.03
+    },
+    "hasil_prediksi": "High",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 7.6,
+      "Extracurricular_Hours_Per_Day": 3.5,
+      "Sleep_Hours_Per_Day": 6.4,
+      "Social_Hours_Per_Day": 0.5,
+      "Physical_Activity_Hours_Per_Day": 6.0,
+      "GPA": 3.12
+    },
+    "hasil_prediksi": "Moderate",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 6.9,
+      "Extracurricular_Hours_Per_Day": 2.5,
+      "Sleep_Hours_Per_Day": 7.5,
+      "Social_Hours_Per_Day": 5.1,
+      "Physical_Activity_Hours_Per_Day": 2.0,
+      "GPA": 3.06
+    },
+    "hasil_prediksi": "Moderate",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 9.1,
+      "Extracurricular_Hours_Per_Day": 3.5,
+      "Sleep_Hours_Per_Day": 8.4,
+      "Social_Hours_Per_Day": 0.1,
+      "Physical_Activity_Hours_Per_Day": 2.9,
+      "GPA": 3.36
+    },
+    "hasil_prediksi": "High",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 5.3,
+      "Extracurricular_Hours_Per_Day": 2.1,
+      "Sleep_Hours_Per_Day": 7.7,
+      "Social_Hours_Per_Day": 3.8,
+      "Physical_Activity_Hours_Per_Day": 5.1,
+      "GPA": 2.39
+    },
+    "hasil_prediksi": "Low",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 9.9,
+      "Extracurricular_Hours_Per_Day": 0.2,
+      "Sleep_Hours_Per_Day": 6.8,
+      "Social_Hours_Per_Day": 2.9,
+      "Physical_Activity_Hours_Per_Day": 4.2,
+      "GPA": 3.09
+    },
+    "hasil_prediksi": "High",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 7.3,
+      "Extracurricular_Hours_Per_Day": 2.1,
+      "Sleep_Hours_Per_Day": 5.0,
+      "Social_Hours_Per_Day": 2.5,
+      "Physical_Activity_Hours_Per_Day": 7.1,
+      "GPA": 3.0
+    },
+    "hasil_prediksi": "High",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 5.4,
+      "Extracurricular_Hours_Per_Day": 3.8,
+      "Sleep_Hours_Per_Day": 6.5,
+      "Social_Hours_Per_Day": 0.6,
+      "Physical_Activity_Hours_Per_Day": 7.7,
+      "GPA": 3.14
+    },
+    "hasil_prediksi": "Low",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 6.7,
+      "Extracurricular_Hours_Per_Day": 0.1,
+      "Sleep_Hours_Per_Day": 5.1,
+      "Social_Hours_Per_Day": 5.0,
+      "Physical_Activity_Hours_Per_Day": 7.1,
+      "GPA": 3.03
+    },
+    "hasil_prediksi": "High",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 7.5,
+      "Extracurricular_Hours_Per_Day": 2.5,
+      "Sleep_Hours_Per_Day": 9.3,
+      "Social_Hours_Per_Day": 2.7,
+      "Physical_Activity_Hours_Per_Day": 2.0,
+      "GPA": 3.2
+    },
+    "hasil_prediksi": "Moderate",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 8.7,
+      "Extracurricular_Hours_Per_Day": 3.3,
+      "Sleep_Hours_Per_Day": 5.7,
+      "Social_Hours_Per_Day": 5.0,
+      "Physical_Activity_Hours_Per_Day": 1.3,
+      "GPA": 3.55
+    },
+    "hasil_prediksi": "High",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 9.8,
+      "Extracurricular_Hours_Per_Day": 3.5,
+      "Sleep_Hours_Per_Day": 9.1,
+      "Social_Hours_Per_Day": 0.4,
+      "Physical_Activity_Hours_Per_Day": 1.2,
+      "GPA": 3.57
+    },
+    "hasil_prediksi": "High",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 8.6,
+      "Extracurricular_Hours_Per_Day": 0.9,
+      "Sleep_Hours_Per_Day": 6.0,
+      "Social_Hours_Per_Day": 2.5,
+      "Physical_Activity_Hours_Per_Day": 6.0,
+      "GPA": 3.38
+    },
+    "hasil_prediksi": "High",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 7.4,
+      "Extracurricular_Hours_Per_Day": 2.0,
+      "Sleep_Hours_Per_Day": 6.1,
+      "Social_Hours_Per_Day": 1.6,
+      "Physical_Activity_Hours_Per_Day": 6.9,
+      "GPA": 3.22
+    },
+    "hasil_prediksi": "Moderate",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 6.3,
+      "Extracurricular_Hours_Per_Day": 0.4,
+      "Sleep_Hours_Per_Day": 5.8,
+      "Social_Hours_Per_Day": 0.9,
+      "Physical_Activity_Hours_Per_Day": 10.6,
+      "GPA": 2.93
+    },
+    "hasil_prediksi": "High",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 7.2,
+      "Extracurricular_Hours_Per_Day": 0.2,
+      "Sleep_Hours_Per_Day": 7.6,
+      "Social_Hours_Per_Day": 3.0,
+      "Physical_Activity_Hours_Per_Day": 6.0,
+      "GPA": 2.83
+    },
+    "hasil_prediksi": "Moderate",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 5.8,
+      "Extracurricular_Hours_Per_Day": 0.8,
+      "Sleep_Hours_Per_Day": 9.9,
+      "Social_Hours_Per_Day": 0.9,
+      "Physical_Activity_Hours_Per_Day": 6.6,
+      "GPA": 2.71
+    },
+    "hasil_prediksi": "Low",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 8.2,
+      "Extracurricular_Hours_Per_Day": 1.3,
+      "Sleep_Hours_Per_Day": 9.8,
+      "Social_Hours_Per_Day": 0.2,
+      "Physical_Activity_Hours_Per_Day": 4.5,
+      "GPA": 3.38
+    },
+    "hasil_prediksi": "High",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 8.8,
+      "Extracurricular_Hours_Per_Day": 0.9,
+      "Sleep_Hours_Per_Day": 6.1,
+      "Social_Hours_Per_Day": 1.0,
+      "Physical_Activity_Hours_Per_Day": 7.2,
+      "GPA": 3.53
+    },
+    "hasil_prediksi": "High",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 5.3,
+      "Extracurricular_Hours_Per_Day": 3.5,
+      "Sleep_Hours_Per_Day": 9.1,
+      "Social_Hours_Per_Day": 6.0,
+      "Physical_Activity_Hours_Per_Day": 0.1,
+      "GPA": 2.68
+    },
+    "hasil_prediksi": "Low",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 6.0,
+      "Extracurricular_Hours_Per_Day": 1.3,
+      "Sleep_Hours_Per_Day": 8.0,
+      "Social_Hours_Per_Day": 1.3,
+      "Physical_Activity_Hours_Per_Day": 7.4,
+      "GPA": 2.95
+    },
+    "hasil_prediksi": "Moderate",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 8.8,
+      "Extracurricular_Hours_Per_Day": 2.4,
+      "Sleep_Hours_Per_Day": 6.0,
+      "Social_Hours_Per_Day": 4.0,
+      "Physical_Activity_Hours_Per_Day": 2.8,
+      "GPA": 3.59
+    },
+    "hasil_prediksi": "High",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 8.6,
+      "Extracurricular_Hours_Per_Day": 1.3,
+      "Sleep_Hours_Per_Day": 8.3,
+      "Social_Hours_Per_Day": 3.2,
+      "Physical_Activity_Hours_Per_Day": 2.6,
+      "GPA": 3.11
+    },
+    "hasil_prediksi": "High",
+    "metode": "NN",
+    "tipe": "Upload"
+  },
+  {
+    "fitur": {
+      "Study_Hours_Per_Day": 9.9,
+      "Extracurricular_Hours_Per_Day": 1.0,
+      "Sleep_Hours_Per_Day": 8.4,
+      "Social_Hours_Per_Day": 3.6,
+      "Physical_Activity_Hours_Per_Day": 1.1,
+      "GPA": 3.25
+    },
+    "hasil_prediksi": "High",
+    "metode": "NN",
+    "tipe": "Upload"
   }
 ]
